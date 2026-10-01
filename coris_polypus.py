@@ -199,3 +199,29 @@ class PolypusEngine:
         )
 
         return telemetry, cleaned_context
+
+    def pulse(
+        self,
+        error_rate: float,
+        latency_ms: float,
+        context_tokens_used: int,
+        context_tokens_max: int = 128000
+    ) -> VitalSigns:
+        """Interfaccia polimorfica standard: compatibile al 100% con CorisEngine.pulse()."""
+        telem, _ = self.pulse_polypus(
+            error_rate=error_rate,
+            latency_ms=latency_ms,
+            context_tokens_used=context_tokens_used,
+            context_tokens_max=context_tokens_max
+        )
+        return VitalSigns(
+            heart_rate_bpm=telem.effective_bpm,
+            free_energy_F=telem.effective_free_energy,
+            homeostatic_pressure_P=telem.effective_pressure,
+            context_fullness_pct=(context_tokens_used / max(1, context_tokens_max)) * 100.0,
+            is_tachycardic=telem.effective_bpm > 105.0,
+            vasoconstriction_active=telem.drainage_triggered,
+            active_antibodies=len(self.antibodies),
+            necrotic_modules=[],
+            status=telem.effective_status
+        )
