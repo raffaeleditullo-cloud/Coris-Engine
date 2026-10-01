@@ -170,7 +170,7 @@ class CorisEngine:
             is_metabolic_waste = (
                 "Traceback" in content or
                 "Error 429" in content or
-                len(content) > 3000 and "result:" in content
+                (len(content) > 3000 and "result:" in content)  # parentesi esplicite: and ha precedenza su or
             )
 
             if not is_metabolic_waste:
