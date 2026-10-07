@@ -225,3 +225,11 @@ class PolypusEngine:
             necrotic_modules=[],
             status=telem.effective_status
         )
+
+    def drain_context_hemodynamics(
+        self,
+        context_items: List[Dict[str, Any]],
+        retention_ratio: float = 0.5
+    ) -> Tuple[List[Dict[str, Any]], int]:
+        """Interfaccia polimorfica standard: delega il drenaggio alla branchia contestuale."""
+        return self.branchial_context_heart.drain_context_hemodynamics(context_items, retention_ratio)
